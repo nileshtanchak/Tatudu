@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tatudu/sub_task/screens/tudu_details_screen.dart';
 
 import '../../add_tudu/screens/add_tudu_screen.dart';
-import '../../db_helper/db_helper.dart';
-import '../../models/tudu.dart';
 import '../../home/services/home_provider.dart';
 import '../../home/widgets/tudu_card.dart';
 import 'package:provider/provider.dart';
@@ -39,12 +38,41 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (_, index) {
                           return TuduCard(
                             tudu: provider.tuduList[index],
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TuduDetailsScreen(
+                                            tudu: provider.tuduList[index],
+                                          )));
+                            },
+                            onEdit: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddTuduScreen(
+                                            tudu: provider.tuduList[index],
+                                            isEdit: true,
+                                          )));
+                            },
+                            onDelete: () async {
+                              if (await context
+                                  .read<HomeProvider>()
+                                  .deleteTuduInDatabase(
+                                      provider.tuduList[index])) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "Tudu : ${provider.tuduList[index].title} deleted successfully"),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
                           );
                         },
                         separatorBuilder: (_, index) {
-                          return SizedBox(
-                            height: 10,
-                          );
+                          return const SizedBox(height: 10);
                         },
                       );
               },

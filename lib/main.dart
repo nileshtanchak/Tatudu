@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tatudu/db_helper/db_helper.dart';
+import 'package:tatudu/sub_task/services/sub_tudu_provider.dart';
 import 'package:tatudu/utils/colors.dart';
 
 import 'home/screens/home_screen.dart';
@@ -17,8 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HomeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => SubTuduProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

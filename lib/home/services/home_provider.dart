@@ -15,7 +15,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<bool> addTuduToDatabase(Tudu tudu) async {
-    int id = await DBHelper.insert(tudu);
+    int id = await DBHelper.insertTudu(tudu);
     if (id != 0) {
       tudu.id = id;
       _tuduList.add(tudu);
@@ -26,7 +26,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<bool> updateTuduInDatabase(Tudu tudu) async {
-    await DBHelper.update(tudu);
+    await DBHelper.updateTudu(tudu);
     int index = _tuduList.indexWhere((element) => element.id == tudu.id);
     _tuduList.removeAt(index);
     _tuduList.insert(index, tudu);
